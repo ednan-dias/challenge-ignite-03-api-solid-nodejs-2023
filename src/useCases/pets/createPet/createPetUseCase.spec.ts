@@ -1,25 +1,49 @@
 import { InMemoryPetsRepository } from '@/useCases/repositories/inMemory/inMemoryPetsRepository'
 import { describe, expect, it, beforeEach } from 'vitest'
 import { CreatePetUseCase } from './createPetUseCase'
-import { Decimal } from '@prisma/client/runtime/library'
+
+import { InMemoryOrgsRepository } from '@/useCases/repositories/inMemory/inMemoryOrgsRepository'
+import { AppError } from '@/errors/AppError'
 
 let petsRepository: InMemoryPetsRepository
+let orgsRepository: InMemoryOrgsRepository
 let sut: CreatePetUseCase
 
 describe('Create Pet Use Case', () => {
   beforeEach(() => {
     petsRepository = new InMemoryPetsRepository()
-    sut = new CreatePetUseCase(petsRepository)
+    orgsRepository = new InMemoryOrgsRepository()
+    sut = new CreatePetUseCase(petsRepository, orgsRepository)
   })
 
   it('should be able to create a pet', async () => {
+    const org = await orgsRepository.create({
+      name: 'Org dos animais fofos',
+      address: 'Rua dos Pets, 343',
+      city: 'São Paulo',
+      whatsapp_number: '(17) 991336532',
+    })
+
     const { pet } = await sut.execute({
       name: 'Bruce',
       race: 'Salsicha',
-      weight: new Decimal(8),
+      weight: 8.5,
       owner_name: 'Ednan',
+      org_id: org.id,
     })
 
     expect(pet.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to create a pet with a incorrectly org id', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Bruce',
+        race: 'Salsicha',
+        weight: 8.5,
+        owner_name: 'Ednan',
+        org_id: 'incorrect_org_id',
+      }),
+    ).rejects.toBeInstanceOf(AppError)
   })
 })

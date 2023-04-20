@@ -1,12 +1,14 @@
-import { Decimal } from '@prisma/client/runtime'
 import { PetsRepository } from '../../repositories/petsRepository'
 import { Pet } from '@prisma/client'
+import { OrgsRepository } from '@/useCases/repositories/orgsRepository'
+import { AppError } from '@/errors/AppError'
 
 export interface CreatePetUseCaseRequest {
   name: string
   race: string
-  weight: Decimal
+  weight: number
   owner_name: string
+  org_id: string
 }
 
 interface CreatePetUseCaseResponse {
@@ -14,20 +16,21 @@ interface CreatePetUseCaseResponse {
 }
 
 export class CreatePetUseCase {
-  constructor(private petsRepository: PetsRepository) {}
+  constructor(
+    private petsRepository: PetsRepository,
+    private orgsRepository: OrgsRepository,
+  ) {}
 
-  async execute({
-    name,
-    race,
-    weight,
-    owner_name,
-  }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
-    const pet = await this.petsRepository.create({
-      name,
-      race,
-      weight,
-      owner_name,
-    })
+  async execute(
+    data: CreatePetUseCaseRequest,
+  ): Promise<CreatePetUseCaseResponse> {
+    const org = await this.orgsRepository.findById(data.org_id)
+
+    if (!org) {
+      throw new AppError('This org not exists!')
+    }
+
+    const pet = await this.petsRepository.create(data)
 
     return { pet }
   }

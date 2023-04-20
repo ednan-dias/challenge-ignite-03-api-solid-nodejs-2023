@@ -6,8 +6,14 @@ import { CreatePetUseCaseRequest } from '@/useCases/pets/createPet/createPetUseC
 export class InMemoryPetsRepository implements PetsRepository {
   private pets: Pet[] = []
 
-  async getPetsByCity(city: string) {
-    const pets = this.pets.filter((pets) => pets)
+  async findById(id: string): Promise<Pet | null> {
+    const pet = this.pets.find((pet) => pet.id === id)
+
+    if (!pet) {
+      return null
+    }
+
+    return pet
   }
 
   async create(data: CreatePetUseCaseRequest) {
