@@ -22,6 +22,8 @@ describe('Create Pet Use Case', () => {
       address: 'Rua dos Pets, 343',
       city: 'São Paulo',
       whatsapp_number: '(17) 991336532',
+      email: 'org_cute@gmail.com',
+      password: '123456',
     })
 
     const { pet } = await sut.execute({

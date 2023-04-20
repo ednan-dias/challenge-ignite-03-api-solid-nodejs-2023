@@ -1,7 +1,8 @@
 import { Org } from '@prisma/client'
-import { RegisterOrgUseCaseRequest } from '../orgs/registerOrg/registerOrgUseCase'
+import { CreateOrgUseCaseRequest } from '../orgs/create/createOrgUseCase'
 
 export interface OrgsRepository {
   findById(id: string): Promise<Org | null>
-  create(data: RegisterOrgUseCaseRequest): Promise<Org>
+  findByEmail(email: string): Promise<Org | null>
+  create(data: CreateOrgUseCaseRequest): Promise<Org>
 }

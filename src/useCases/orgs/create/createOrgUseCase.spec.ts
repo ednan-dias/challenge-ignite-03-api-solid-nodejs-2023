@@ -1,23 +1,25 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 
 import { InMemoryOrgsRepository } from '@/useCases/repositories/inMemory/inMemoryOrgsRepository'
-import { RegisterOrgUseCase } from './registerOrgUseCase'
+import { CreateOrgUseCase } from './createOrgUseCase'
 
 let orgsRepository: InMemoryOrgsRepository
-let sut: RegisterOrgUseCase
+let sut: CreateOrgUseCase
 
 describe('Register Org Use Case', () => {
   beforeEach(() => {
     orgsRepository = new InMemoryOrgsRepository()
-    sut = new RegisterOrgUseCase(orgsRepository)
+    sut = new CreateOrgUseCase(orgsRepository)
   })
 
   it('should be able to register an org', async () => {
     const { org } = await sut.execute({
-      name: 'Org dos animaiszinhos',
+      name: 'Org dos animais fofos',
       address: 'Rua Lua dos Luares, 555',
       city: 'São Paulo',
       whatsapp_number: '(17) 991345533',
+      email: 'org_cute@gmail.com',
+      password: '123456',
     })
 
     expect(org.id).toEqual(expect.any(String))

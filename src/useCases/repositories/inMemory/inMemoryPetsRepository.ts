@@ -1,7 +1,7 @@
 import { Pet } from '@prisma/client'
 import { PetsRepository } from '../petsRepository'
 import { randomUUID } from 'node:crypto'
-import { CreatePetUseCaseRequest } from '@/useCases/pets/createPet/createPetUseCase'
+import { CreatePetUseCaseRequest } from '@/useCases/pets/create/createPetUseCase'
 
 export class InMemoryPetsRepository implements PetsRepository {
   private pets: Pet[] = []
