@@ -1,10 +1,12 @@
 import fastify from 'fastify'
 import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
 
-import { AppError } from './errors/AppError'
 import { env } from './env'
 import { petsRoutes } from './http/routes/pets.routes'
 import { orgsRoutes } from './http/routes/orgs.routes'
+import { ZodError } from 'zod'
+import { AppError } from './errors/AppError'
 
 const app = fastify()
 
@@ -19,17 +21,20 @@ app.register(fastifyJwt, {
   },
 })
 
-app.register(petsRoutes, {
-  prefix: '/pets',
-})
+app.register(fastifyCookie)
 
-app.register(orgsRoutes, {
-  prefix: '/orgs',
-})
+app.register(petsRoutes)
+app.register(orgsRoutes)
 
 app.setErrorHandler((err, req, reply) => {
   if (err instanceof AppError) {
     return reply.status(err.statusCode).send({ message: err.message })
+  }
+
+  if (err instanceof ZodError) {
+    return reply
+      .status(400)
+      .send({ message: 'Validation error', issues: err.format() })
   }
 
   if (env.NODE_ENV !== 'production') {

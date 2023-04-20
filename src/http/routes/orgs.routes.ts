@@ -1,9 +1,13 @@
 import { FastifyInstance } from 'fastify'
 
-import { OrgsController } from '../controllers/orgsController'
+import { create } from '../controllers/orgs/create'
+import { authenticate } from '../controllers/orgs/authenticate'
+import { refresh } from '../controllers/orgs/refresh'
 
 export async function orgsRoutes(app: FastifyInstance) {
-  const orgsController = new OrgsController()
+  app.post('/orgs', create)
 
-  app.post('/sessions', orgsController.authenticate)
+  // Authentication
+  app.post('/sessions', authenticate)
+  app.patch('/refresh', refresh)
 }
