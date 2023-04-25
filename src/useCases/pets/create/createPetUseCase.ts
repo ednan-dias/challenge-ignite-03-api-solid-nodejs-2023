@@ -4,10 +4,9 @@ import { OrgsRepository } from '@/useCases/repositories/orgsRepository'
 import { AppError } from '@/errors/AppError'
 
 export interface CreatePetUseCaseRequest {
-  name: string
+  type: 'DOG' | 'CAT'
   race: string
-  weight: number
-  owner_name: string
+  color: string
   org_id: string
 }
 

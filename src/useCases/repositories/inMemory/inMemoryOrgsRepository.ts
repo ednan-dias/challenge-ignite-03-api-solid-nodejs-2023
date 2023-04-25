@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 import { hash } from 'bcryptjs'
 
 export class InMemoryOrgsRepository implements OrgsRepository {
-  private orgs: Org[] = []
+  orgs: Org[] = []
 
   async findById(id: string) {
     const org = this.orgs.find((org) => org.id === id)

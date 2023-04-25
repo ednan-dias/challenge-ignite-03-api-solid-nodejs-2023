@@ -15,10 +15,9 @@ describe('Get Pet Details Use Case', () => {
 
   it('should be able to get a specific pet', async () => {
     const petCreated = await petsRepository.create({
-      name: 'Bruce',
+      type: 'DOG',
       race: 'Salsicha',
-      weight: 8.5,
-      owner_name: 'Ednan',
+      color: 'brown',
       org_id: '101',
     })
 
@@ -29,10 +28,9 @@ describe('Get Pet Details Use Case', () => {
 
   it('should not be able to get a specific pet with an inexistent id', async () => {
     await petsRepository.create({
-      name: 'Bruce',
+      type: 'DOG',
       race: 'Salsicha',
-      weight: 8.5,
-      owner_name: 'Ednan',
+      color: 'brown',
       org_id: '101',
     })
 

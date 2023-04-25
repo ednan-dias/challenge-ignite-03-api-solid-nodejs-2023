@@ -7,14 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Type {
+  CAT
+  DOG
+}
+
 model Pet {
-  id         String @id @default(uuid())
-  name       String
-  race       String
-  weight     Float
-  owner_name String
-  org        Org    @relation(fields: [org_id], references: [id])
-  org_id     String
+  id    String @id @default(uuid())
+  type  Type
+  race  String
+  color String
+
+  org    Org    @relation(fields: [org_id], references: [id])
+  org_id String
 
   @@map("pets")
 }
@@ -23,11 +28,12 @@ model Org {
   id              String @id @default(uuid())
   name            String
   email           String @unique
-  password        String @unique
+  password        String
   address         String
   city            String
   whatsapp_number String
-  pets            Pet[]
+
+  pets Pet[]
 
   @@map("orgs")
 }

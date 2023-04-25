@@ -27,10 +27,9 @@ describe('Create Pet Use Case', () => {
     })
 
     const { pet } = await sut.execute({
-      name: 'Bruce',
+      type: 'DOG',
       race: 'Salsicha',
-      weight: 8.5,
-      owner_name: 'Ednan',
+      color: 'brown',
       org_id: org.id,
     })
 
@@ -40,10 +39,9 @@ describe('Create Pet Use Case', () => {
   it('should not be able to create a pet with a incorrectly org id', async () => {
     await expect(() =>
       sut.execute({
-        name: 'Bruce',
+        type: 'DOG',
         race: 'Salsicha',
-        weight: 8.5,
-        owner_name: 'Ednan',
+        color: 'brown',
         org_id: 'incorrect_org_id',
       }),
     ).rejects.toBeInstanceOf(AppError)

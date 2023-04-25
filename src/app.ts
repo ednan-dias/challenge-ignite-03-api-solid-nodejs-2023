@@ -28,10 +28,13 @@ app.register(orgsRoutes)
 
 app.setErrorHandler((err, req, reply) => {
   if (err instanceof AppError) {
+    env.NODE_ENV !== 'production' && console.log(err.message)
     return reply.status(err.statusCode).send({ message: err.message })
   }
 
   if (err instanceof ZodError) {
+    env.NODE_ENV !== 'production' && console.log(err.message)
+
     return reply
       .status(400)
       .send({ message: 'Validation error', issues: err.format() })

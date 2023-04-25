@@ -1,10 +1,12 @@
+-- CreateEnum
+CREATE TYPE "Type" AS ENUM ('CAT', 'DOG');
+
 -- CreateTable
 CREATE TABLE "pets" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "type" "Type" NOT NULL,
     "race" TEXT NOT NULL,
-    "weight" DOUBLE PRECISION NOT NULL,
-    "owner_name" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
     "org_id" TEXT NOT NULL,
 
     CONSTRAINT "pets_pkey" PRIMARY KEY ("id")
